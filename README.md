@@ -15,7 +15,7 @@ Embedding Model: jina-embeddings-v3 (via Jina AI API)(LINK : https://jina.ai/ ).
 Similarity Metric: Cosine Similarity.
 
 🧠 Implementation Details
-1) Vector Store & Indexing: I utilized ChromaDB to simulate a production pgvector environment. The bot personas were embedded and indexed in a high-dimensional vector space (1024 dimensions) using the Jina AI v3
+1) Vector Store & Indexing: I utilized ChromaDB(In-Memory RAM )  to simulate a production pgvector environment. The bot personas were embedded and indexed in a high-dimensional vector space (1024 dimensions) using the Jina AI v3
    model, which is specifically optimized for retrieval tasks.
    
 3) The Routing Logic: I developed a Python function route_post_to_bots(post_content, threshold) that:
