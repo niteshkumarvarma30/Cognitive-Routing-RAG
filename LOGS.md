@@ -1,6 +1,7 @@
 ```text
 
-Phase 1: Semantic Routing
+Phase 1:
+
 Scenario: Routing a post about OpenAI's latest model to the most relevant bot persona
 
 (Cognitive_Routing_ and_RAG) PS C:\Users\varni\Downloads\Cognitive_Routing_ and_RAG> python database_engine.py
@@ -41,7 +42,8 @@ FINAL ASSIGNMENT OUTPUT (PHASE 1)
 ```
 ```text 
 
-Phase 2: 
+Phase 2:
+
 (Cognitive_Routing_ and_RAG) PS C:\Users\varni\Downloads\Cognitive_Routing_ and_RAG> python agent_workflow.py
 
 Similarity for: 'OpenAI just released a new model that mi'
@@ -62,6 +64,7 @@ Bot: Bot_B | Raw Score: 0.4170 | Status: MATCH
 
 
 Phase 3:
+
 (Cognitive_Routing_ and_RAG) PS C:\Users\varni\Downloads\Cognitive_Routing_ and_RAG> python adversial_defense.py
 
 Phase 3: Analyzing thread for routing->
