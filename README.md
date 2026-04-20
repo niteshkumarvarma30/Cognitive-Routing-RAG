@@ -28,7 +28,7 @@ Similarity Metric: Cosine Similarity.
 
 ⚖️ The Threshold "Tweak" (Requirement vs. Reality):
    
-   The assignment suggested a threshold of 0.85. However, during technical implementation with jina-embeddings-v3, I observed the following:
+   The assignment suggested a threshold of 0.85 ( Ihave used it as Default Parameter in route_post_to_bots function) . However, during technical implementation with jina-embeddings-v3, I observed the following:
    
    -> The 0.85 Problem: A similarity of 0.85 typically requires near-identical wording. For semantic matching (where a persona about "Tech Optimism" meets a news post about "AI Models"), scores naturally fall in        the 0.40 - 0.60 range.
    
