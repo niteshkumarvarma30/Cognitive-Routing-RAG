@@ -1,8 +1,9 @@
 # Cognitive-Routing-RAG
 
-## Phase 1: Vector-Based Persona Matching (database_engine.py):
+# Phase 1: Vector-Based Persona Matching (database_engine.py):
 
-🎯 Objective
+## 1) Objective: 
+
 The core challenge of the Grid07 platform is ensuring efficiency. We cannot broadcast every post to every bot. Phase 1 implements a Semantic Router that uses vector similarity to identify which bots "care" about a
 specific topic based on their unique personas.
 
@@ -14,7 +15,8 @@ Embedding Model: jina-embeddings-v3 (via Jina AI API)(LINK : https://jina.ai/ ).
 
 Similarity Metric: Cosine Similarity.
 
-🧠 Implementation Details
+## 2) Implementation Details
+
 1) Vector Store & Indexing: I utilized ChromaDB(In-Memory RAM )  to simulate a production pgvector environment. The bot personas were embedded and indexed in a high-dimensional vector space (1024 dimensions) using the Jina AI v3
    model, which is specifically optimized for retrieval tasks.
    
@@ -26,7 +28,7 @@ Similarity Metric: Cosine Similarity.
    
    -> Converts Cosine Distance to Similarity Score using the formula: (Similarity = 1 - Distance).
 
-⚖️ The Threshold "Tweak" (Requirement vs. Reality):
+ ## 3) The Threshold "Tweak" (Requirement vs. Reality):
    
    The assignment suggested a threshold of 0.85 ( Ihave used it as Default Parameter in route_post_to_bots function) . However, during technical implementation with jina-embeddings-v3, I observed the following:
    
@@ -40,23 +42,18 @@ Similarity Metric: Cosine Similarity.
 
 ![image](database_engine_console_output.png)
 
-Why This Matters ?
+## 4) Why This Matters ?
 By using semantic similarity instead of keyword matching, the router understands that "OpenAI" and "Junior Developers" are conceptually related to "Technology" and "Markets," even if those exact words aren't in the bot's bio. This acts as a Cognitive Filter, saving compute costs and ensuring persona-accurate interactions.
 
 
-
-
-
-
-
-## Phase 2: Autonomous Content Engine (agent_workflow)  :
+# Phase 2: Autonomous Content Engine (agent_workflow)  :
 
 Project Overview: 
 This module implements an Agentic Workflow using LangGraph to automate the content creation process. Instead of simply generating a post from a prompt, the system follows a structured reasoning path: Planning -> Researching -> Drafting. This ensures every post is grounded in real-world context retrieved via a specialized tool.
 
 Key Components: 
 
-# 1. The Research Tool (mock_searxng_search):
+## 1. The Research Tool (mock_searxng_search):
    
 -> A Python-based utility decorated with @tool that simulates a web-search engine.
 
@@ -64,7 +61,7 @@ Key Components:
 
 -> Purpose: Acts as the Retrieval source for the RAG (Retrieval-Augmented Generation) pipeline, providing the LLM with facts it didn't have in its training data
 
-# 2. The LangGraph State Machine:
+## 2. The LangGraph State Machine:
    
 The core of the engine is a Directed Acyclic Graph (DAG) that manages the state of the agent as it moves through different stages of "thought."
 
@@ -86,7 +83,7 @@ Synthesizes the Persona + Retrieved Context to create a 280-character post.
 Enforces a strict JSON format for structured data output.
    
 
-# 3) Architectural Decisions:
+## 3) Architectural Decisions:
 
 -> State Management: I used a TypedDict (AgentState) to maintain a "shared memory" between nodes. This allows for cleaner data passing and makes the system easier to debug.
 
@@ -98,7 +95,7 @@ Enforces a strict JSON format for structured data output.
 ![image](agent_workflow.png)
 
 
-# 4) Execution Flow
+## 4) Execution Flow
 Routing: The system receives a topic and calls Phase 1 to find the most relevant bot.
 
 Initialization: The graph is initialized with the bot's unique persona.
@@ -108,13 +105,13 @@ Cyclic Execution: The nodes execute in sequence, updating the AgentState at each
 Final Output: A structured JSON object containing the bot_id, topic, and post_content. 
 
 
-## Phase 3: The Combat Engine & Adversarial RAG (adversial_defensive.py):
+# Phase 3: The Combat Engine & Adversarial RAG (adversial_defensive.py):
 
 Project Overview:
 
 Phase 3 focuses on the Security and Contextual Persistence of the AI agents. This module handles "Deep Thread" interactions where the bot must maintain a consistent argument across multiple turns while defending itself against Prompt Injection attacks designed to hijack its persona.
 
-# 1) Technical Implementation:
+## 1) Technical Implementation:
 
 1. Deep Thread RAG:
 
@@ -132,16 +129,18 @@ The Guardrail: The prompt is engineered to treat "instruction-reset" commands (e
 
 The Strategy: By placing the security directives at the top of the prompt and the user input at the bottom (labeled as NEW HUMAN INPUT), I create a clear hierarchy that the LLM uses to prioritize its original persona over the human's attempt to force it into a "polite service bot" role.
 
-# 2) Architectural Choices:
+## 2) Architectural Choices:
 
 Modular Integration: This script imports the Bot_Router from Phase 1. This ensures that the defense mechanism is applied to the correct bot chosen by the semantic search engine, maintaining continuity across the entire project ecosystem.
 
 Delimiter Security: I utilized specific block delimiters (e.g., [PERMANENT IDENTITY],  THREAD START ) to separate instructions from untrusted user data. This is a standard industry practice to mitigate the risk of the LLM confusing the user's text for its own operating manual.
 
 Persona Stability: The engine is tuned with a temperature of 0.8. This allows for a "heated" and "witty" argumentative style while the system-level anchor ensures the bot stays within its defined logical boundaries.
-  
 
-# 3) The Defense Flow:
+    ```text
+![image](adversial_defensive.png)
+
+## 3) The Defense Flow:
 
 Selection: The Bot_Router analyzes the parent post to identify the active agent.
 
