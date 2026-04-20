@@ -154,11 +154,17 @@ Natural Continuation: The bot generates a response that addresses the technical 
 
 The Phase 2 Autonomous Engine is built on a StateGraph architecture. I chose this over a linear chain because it allows for granular control over the data flow and simplifies debugging of the "reasoning" process.
 
-### decide_search (The Planner): This is the entry node. It receives the bot's raw persona and the target topic. Its role is to bridge the gap between "identity" and "inquiry." It forces the LLM to think about what it doesn't know, generating a specific search string for the research phase.
+### decide_search (The Planner):
 
-### web_search (The Researcher): This node acts as the system's "Sensor." It executes the mock_searxng_search tool. By isolating tool execution in its own node, I ensure that the LLM is only provided with factual, grounded context before it begins the creative writing process.
+This is the entry node. It receives the bot's raw persona and the target topic. Its role is to bridge the gap between "identity" and "inquiry." It forces the LLM to think about what it doesn't know, generating a specific search string for the research phase.
 
-### draft_post (The Writer): This final node is the "Synthesizer." It merges the original persona with the retrieved context. It is constrained by a system instruction to output strict JSON, making the agent's output ready for programmatic use in a larger software ecosystem.
+### web_search (The Researcher):
+
+This node acts as the system's "Sensor." It executes the mock_searxng_search tool. By isolating tool execution in its own node, I ensure that the LLM is only provided with factual, grounded context before it begins the creative writing process.
+
+### draft_post (The Writer): 
+
+This final node is the "Synthesizer." It merges the original persona with the retrieved context. It is constrained by a system instruction to output strict JSON, making the agent's output ready for programmatic use in a larger software ecosystem.
 
 # Defending Against Prompt Injection (Phase 3):
 
