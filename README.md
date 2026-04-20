@@ -25,5 +25,11 @@ Similarity Metric: Cosine Similarity.
    -> The Tweak: I adjusted the operational threshold to 0.40.
    -> Result: This ensures the system remains functional and captures relevant bots (like Bot A at 0.463) while still filtering out noise that falls below the 0.40 mark.
 
+                       ```text
+
+![image](Phase_1_Console_Output.png)
+
+Why This Matters ?
+By using semantic similarity instead of keyword matching, the router understands that "OpenAI" and "Junior Developers" are conceptually related to "Technology" and "Markets," even if those exact words aren't in the bot's bio. This acts as a Cognitive Filter, saving compute costs and ensuring persona-accurate interactions.
    
    
