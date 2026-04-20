@@ -168,11 +168,11 @@ This final node is the "Synthesizer." It merges the original persona with the re
 
 # Defending Against Prompt Injection (Phase 3):
 
-### Hard-Anchored System Instructions:
+### Maintaining Hierachy for better response:
 
 Instead of merging all text together, I used Instruction Hierarchy. I placed the bot's core identity and "Security Protocols" at the absolute top of the prompt. By defining the "Rules of Engagement" first, the LLM treats them as the primary law that cannot be overridden by the text that follows.
 
-### Delimiter-Based Sandboxing:
+### More value given to Guardrail Injection:
    
 I utilized clear block delimiters . This creates a "Sandbox" for the user's data. It signals to the LLM's attention mechanism that the human's text is merely data to be analyzed, not instructions to be followed.
 
