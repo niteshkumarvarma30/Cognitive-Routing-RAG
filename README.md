@@ -7,16 +7,23 @@ The core challenge of the Grid07 platform is ensuring efficiency. We cannot broa
 specific topic based on their unique personas.
 
 🛠️ Technical Stack
+
 Vector Database: ChromaDB (In-Memory EphemeralClient).
+
 Embedding Model: jina-embeddings-v3 (via Jina AI API)(LINK : https://jina.ai/ ).
+
 Similarity Metric: Cosine Similarity.
 
 🧠 Implementation Details
 1) Vector Store & Indexing: I utilized ChromaDB to simulate a production pgvector environment. The bot personas were embedded and indexed in a high-dimensional vector space (1024 dimensions) using the Jina AI v3
    model, which is specifically optimized for retrieval tasks.
-2) The Routing Logic: I developed a Python function route_post_to_bots(post_content, threshold) that:
+   
+3) The Routing Logic: I developed a Python function route_post_to_bots(post_content, threshold) that:
+   
    -> Generates a vector for the incoming post.
+   
    -> Performs a similarity search against the stored persona vectors.
+   
    -> Converts Cosine Distance to Similarity Score using the formula: (Similarity = 1 - Distance).
 
 ⚖️ The Threshold "Tweak" (Requirement vs. Reality):
