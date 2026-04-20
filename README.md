@@ -45,6 +45,10 @@ By using semantic similarity instead of keyword matching, the router understands
 
 
 
+
+
+
+
 Phase 2: Autonomous Content Engine : 
 
 Project Overview: 
@@ -89,6 +93,9 @@ Enforces a strict JSON format for structured data output.
 -> JSON Mode: By setting format="json" in the ChatOllama initialization, I reduced formatting errors, ensuring that the output is ready for consumption by front-end applications.
 
 -> Decoupling: The ContentEngine is designed to be bot-agnostic. It imports the Bot_Router from Phase 1, allowing the system to scale to any number of bots without changing the workflow logic.
+
+     ```text
+![image](agent_workflow.png)
 
 
 3) Execution Flow
