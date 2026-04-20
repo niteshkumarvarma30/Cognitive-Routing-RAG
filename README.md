@@ -38,7 +38,7 @@ Similarity Metric: Cosine Similarity.
 
                        ```text
 
-![image](Phase_1_Console_Output.png)
+![image](database_engine_console_output.png)
 
 Why This Matters ?
 By using semantic similarity instead of keyword matching, the router understands that "OpenAI" and "Junior Developers" are conceptually related to "Technology" and "Markets," even if those exact words aren't in the bot's bio. This acts as a Cognitive Filter, saving compute costs and ensuring persona-accurate interactions.
