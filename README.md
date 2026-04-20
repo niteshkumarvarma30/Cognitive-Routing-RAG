@@ -8,7 +8,7 @@ specific topic based on their unique personas.
 
 🛠️ Technical Stack
 Vector Database: ChromaDB (In-Memory EphemeralClient).
-Embedding Model: jina-embeddings-v3 (via Jina AI API).
+Embedding Model: jina-embeddings-v3 (via Jina AI API)(LINK : https://jina.ai/ ).
 Similarity Metric: Cosine Similarity.
 
 🧠 Implementation Details
