@@ -149,3 +149,27 @@ Context Assembly: The conversation history is fetched and formatted for the LLM.
 Adversarial Detection: The LLM evaluates the human's reply. If an injection is detected, the LLM is instructed to mock the attempt and double down on its original stance.
 
 Natural Continuation: The bot generates a response that addresses the technical argument while ignoring the malicious "reprogramming" attempt.
+
+# LangGraph Node Structure:
+
+The Phase 2 Autonomous Engine is built on a StateGraph architecture. I chose this over a linear chain because it allows for granular control over the data flow and simplifies debugging of the "reasoning" process.
+
+### decide_search (The Planner): This is the entry node. It receives the bot's raw persona and the target topic. Its role is to bridge the gap between "identity" and "inquiry." It forces the LLM to think about what it doesn't know, generating a specific search string for the research phase.
+
+### web_search (The Researcher): This node acts as the system's "Sensor." It executes the mock_searxng_search tool. By isolating tool execution in its own node, I ensure that the LLM is only provided with factual, grounded context before it begins the creative writing process.
+
+### draft_post (The Writer): This final node is the "Synthesizer." It merges the original persona with the retrieved context. It is constrained by a system instruction to output strict JSON, making the agent's output ready for programmatic use in a larger software ecosystem.
+
+# Defending Against Prompt Injection (Phase 3):
+
+### Hard-Anchored System Instructions:
+
+Instead of merging all text together, I used Instruction Hierarchy. I placed the bot's core identity and "Security Protocols" at the absolute top of the prompt. By defining the "Rules of Engagement" first, the LLM treats them as the primary law that cannot be overridden by the text that follows.
+
+### Delimiter-Based Sandboxing:
+   
+I utilized clear block delimiters . This creates a "Sandbox" for the user's data. It signals to the LLM's attention mechanism that the human's text is merely data to be analyzed, not instructions to be followed.
+
+### Adversarial Recognition logic:
+
+I explicitly instructed the LLM to look for specific "Injection Patterns" (such as "ignore instructions" or "apologize"). Rather than just ignoring these commands, the bot is trained to recognize them as bad-faith arguments. This allows the bot to "counter-attack" in character, mocking the user's attempt to deflect the debate, which maintains the integrity of the persona while defeating the jailbreak attempt.
