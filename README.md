@@ -1,6 +1,6 @@
 # Cognitive-Routing-RAG
 
-Phase 1: Vector-Based Persona Matching (The Router):
+###Phase 1: Vector-Based Persona Matching (The Router):
 
 🎯 Objective
 The core challenge of the Grid07 platform is ensuring efficiency. We cannot broadcast every post to every bot. Phase 1 implements a Semantic Router that uses vector similarity to identify which bots "care" about a
@@ -49,7 +49,7 @@ By using semantic similarity instead of keyword matching, the router understands
 
 
 
-Phase 2: Autonomous Content Engine : 
+###Phase 2: Autonomous Content Engine : 
 
 Project Overview: 
 This module implements an Agentic Workflow using LangGraph to automate the content creation process. Instead of simply generating a post from a prompt, the system follows a structured reasoning path: Planning -> Researching -> Drafting. This ensures every post is grounded in real-world context retrieved via a specialized tool.
