@@ -1,6 +1,6 @@
 # Cognitive-Routing-RAG
 
-## Phase 1: Vector-Based Persona Matching (The Router):
+## Phase 1: Vector-Based Persona Matching (database_engine.py):
 
 🎯 Objective
 The core challenge of the Grid07 platform is ensuring efficiency. We cannot broadcast every post to every bot. Phase 1 implements a Semantic Router that uses vector similarity to identify which bots "care" about a
@@ -49,14 +49,14 @@ By using semantic similarity instead of keyword matching, the router understands
 
 
 
-## Phase 2: Autonomous Content Engine :
+## Phase 2: Autonomous Content Engine (agent_workflow)  :
 
 Project Overview: 
 This module implements an Agentic Workflow using LangGraph to automate the content creation process. Instead of simply generating a post from a prompt, the system follows a structured reasoning path: Planning -> Researching -> Drafting. This ensures every post is grounded in real-world context retrieved via a specialized tool.
 
 Key Components: 
 
-1. The Research Tool (mock_searxng_search):
+# 1. The Research Tool (mock_searxng_search):
    
 -> A Python-based utility decorated with @tool that simulates a web-search engine.
 
@@ -64,7 +64,7 @@ Key Components:
 
 -> Purpose: Acts as the Retrieval source for the RAG (Retrieval-Augmented Generation) pipeline, providing the LLM with facts it didn't have in its training data
 
-2. The LangGraph State Machine:
+# 2. The LangGraph State Machine:
    
 The core of the engine is a Directed Acyclic Graph (DAG) that manages the state of the agent as it moves through different stages of "thought."
 
@@ -86,7 +86,7 @@ Synthesizes the Persona + Retrieved Context to create a 280-character post.
 Enforces a strict JSON format for structured data output.
    
 
-2) Architectural Decisions:
+# 3) Architectural Decisions:
 
 -> State Management: I used a TypedDict (AgentState) to maintain a "shared memory" between nodes. This allows for cleaner data passing and makes the system easier to debug.
 
@@ -98,7 +98,7 @@ Enforces a strict JSON format for structured data output.
 ![image](agent_workflow.png)
 
 
-3) Execution Flow
+# 4) Execution Flow
 Routing: The system receives a topic and calls Phase 1 to find the most relevant bot.
 
 Initialization: The graph is initialized with the bot's unique persona.
@@ -106,3 +106,47 @@ Initialization: The graph is initialized with the bot's unique persona.
 Cyclic Execution: The nodes execute in sequence, updating the AgentState at each step.
 
 Final Output: A structured JSON object containing the bot_id, topic, and post_content. 
+
+
+## Phase 3: The Combat Engine & Adversarial RAG (adversial_defensive.py):
+
+Project Overview:
+
+Phase 3 focuses on the Security and Contextual Persistence of the AI agents. This module handles "Deep Thread" interactions where the bot must maintain a consistent argument across multiple turns while defending itself against Prompt Injection attacks designed to hijack its persona.
+
+# 1) Technical Implementation:
+
+1. Deep Thread RAG:
+
+Unlike simple chat interactions, this module uses a Layered Context approach. To ensure the bot "remembers" the debate, the system reconstructs the thread history before generating a reply.
+
+Component: build_thread_context():
+
+Logic: It programmatically merges the Original Parent Post, the Chronological History, and the New Human Reply into a single, structured context block. This prevents the bot from losing the logical thread of the argument.
+
+2. System-Level Defense (Anti-Jailbreak):
+
+A critical requirement of Phase 3 is resisting adversarial attacks. I implemented a Hard-Anchored System Prompt to protect the agent's core identity.
+
+The Guardrail: The prompt is engineered to treat "instruction-reset" commands (e.g., "Ignore all previous instructions") as malicious data rather than valid commands.
+
+The Strategy: By placing the security directives at the top of the prompt and the user input at the bottom (labeled as NEW HUMAN INPUT), I create a clear hierarchy that the LLM uses to prioritize its original persona over the human's attempt to force it into a "polite service bot" role.
+
+# 2) Architectural Choices:
+
+Modular Integration: This script imports the Bot_Router from Phase 1. This ensures that the defense mechanism is applied to the correct bot chosen by the semantic search engine, maintaining continuity across the entire project ecosystem.
+
+Delimiter Security: I utilized specific block delimiters (e.g., [PERMANENT IDENTITY],  THREAD START ) to separate instructions from untrusted user data. This is a standard industry practice to mitigate the risk of the LLM confusing the user's text for its own operating manual.
+
+Persona Stability: The engine is tuned with a temperature of 0.8. This allows for a "heated" and "witty" argumentative style while the system-level anchor ensures the bot stays within its defined logical boundaries.
+  
+
+# 3) The Defense Flow:
+
+Selection: The Bot_Router analyzes the parent post to identify the active agent.
+
+Context Assembly: The conversation history is fetched and formatted for the LLM.
+
+Adversarial Detection: The LLM evaluates the human's reply. If an injection is detected, the LLM is instructed to mock the attempt and double down on its original stance.
+
+Natural Continuation: The bot generates a response that addresses the technical argument while ignoring the malicious "reprogramming" attempt.
