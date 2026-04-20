@@ -1,0 +1,5 @@
+chromadb
+langchain-ollama
+langchain-core
+langgraph
+python-dotenv
