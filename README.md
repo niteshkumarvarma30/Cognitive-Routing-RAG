@@ -20,9 +20,13 @@ Similarity Metric: Cosine Similarity.
    -> Converts Cosine Distance to Similarity Score using the formula: (Similarity = 1 - Distance).
 
 ⚖️ The Threshold "Tweak" (Requirement vs. Reality):
+   
    The assignment suggested a threshold of 0.85. However, during technical implementation with jina-embeddings-v3, I observed the following:
-   -> The 0.85 Problem: A similarity of 0.85 typically requires near-identical wording. For semantic matching (where a persona about "Tech Optimism" meets a news post about "AI Models"), scores naturally fall in the 0.40 - 0.60 range.
+   
+   -> The 0.85 Problem: A similarity of 0.85 typically requires near-identical wording. For semantic matching (where a persona about "Tech Optimism" meets a news post about "AI Models"), scores naturally fall in        the 0.40 - 0.60 range.
+   
    -> The Tweak: I adjusted the operational threshold to 0.40.
+   
    -> Result: This ensures the system remains functional and captures relevant bots (like Bot A at 0.463) while still filtering out noise that falls below the 0.40 mark.
 
                        ```text
